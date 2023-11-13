@@ -1,0 +1,12 @@
+diff --git a/node_modules/dm-howler/package.json b/node_modules/dm-howler/package.json
+index fbc2519..07cbc7b 100755
+--- a/node_modules/dm-howler/package.json
++++ b/node_modules/dm-howler/package.json
+@@ -1,6 +1,7 @@
+ {
+   "name": "dm-howler",
+   "version": "2.2.4",
++  "type":"module",
+   "author": "James Simpson <james@goldfirestudios.com> (http://goldfirestudios.com), Keillion modify it to esm",
+   "files": [
+     "/dist",

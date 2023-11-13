@@ -1,0 +1,12 @@
+diff --git a/node_modules/dm-fabric/package.json b/node_modules/dm-fabric/package.json
+index 2de87d7..bc14318 100755
+--- a/node_modules/dm-fabric/package.json
++++ b/node_modules/dm-fabric/package.json
+@@ -3,6 +3,7 @@
+   "description": "Object model for HTML5 canvas, and SVG-to-canvas parser.",
+   "homepage": "http://fabricjs.com/",
+   "version": "5.1.17",
++  "type":"module",
+   "author": "Juriy Zaytsev <kangax@gmail.com>",
+   "contributors": [
+     {
