@@ -1,4 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
+import { useState } from "react";
+import BarcodeScanner from "~/components/BarcodeScanner";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,34 +10,14 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const [isActive,setIsActive] = useState(false);
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div>
+      <h1>Remix Barcode Scanner</h1>
+      <button onClick={()=>setIsActive(true)} >Start Scanning</button>
+      <div className="scanner" style={{display:isActive?"":"none",position:"absolute",width:"100%",height:"100%",top:0,left:0}}>
+        <BarcodeScanner isActive={isActive}></BarcodeScanner>
+      </div>
     </div>
   );
 }
