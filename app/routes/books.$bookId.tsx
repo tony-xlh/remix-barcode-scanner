@@ -1,4 +1,4 @@
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData,useNavigate } from "@remix-run/react";
 import { getBook } from "../data";
 import BookCard from "~/components/BookCard";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
@@ -13,10 +13,10 @@ export const loader = async ({
     throw new Response("Not Found", { status: 404 });
   }
   return json({ bookRecord });
-
 };
 
 export default function Book() {
+  const navigate = useNavigate();
   const { bookRecord } = useLoaderData<typeof loader>();
   return (
     <div>
@@ -41,7 +41,7 @@ export default function Book() {
           </Form>
         </div>
       </BookCard>
-      
+      <button onClick={()=>navigate(-1)}>Back</button>
     </div>
   );
 }

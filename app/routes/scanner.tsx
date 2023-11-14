@@ -4,7 +4,7 @@ import BarcodeScanner from "~/components/BarcodeScanner";
 import {CameraEnhancer} from "dynamsoft-camera-enhancer";
 import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-import { Form } from "@remix-run/react";
+import { Form, useNavigate } from "@remix-run/react";
 import { addBook } from "~/data";
 
 export const meta: MetaFunction = () => {
@@ -41,6 +41,7 @@ export const links: LinksFunction = () => [
 
 
 export default function Scanner() {
+  const navigate = useNavigate();
   const [isActive,setIsActive] = useState(false);
   const [initialized,setInitialized] = useState(false);
   const [ISBN,setISBN] = useState("");
@@ -87,6 +88,7 @@ export default function Scanner() {
           </label>
         </div>
         <button type="submit">Submit</button>
+        <button type="button" onClick={()=>navigate(-1)}>Back</button>
       </Form>
       <div className="scanner" style={{display:isActive?"":"none"}}>
         <BarcodeScanner 
