@@ -1,6 +1,7 @@
 import { Form, useLoaderData,useNavigate } from "@remix-run/react";
 import { BookRecord, editBook, getBook } from "../data";
 import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect } from "@remix-run/node";
+import invariant from "tiny-invariant";
 
 export const loader = async ({
   params,
@@ -20,15 +21,14 @@ export const action = async ({
   params,
   request,
 }: ActionFunctionArgs) => {
+  invariant(params.bookId, "Missing bookId param");
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
-  if (params.bookId) {
-    let bookRecord:BookRecord|null = await getBook(params.bookId);
-    if (bookRecord) {
-      bookRecord.title = updates.title.toString();
-      bookRecord.author = updates.author.toString();
-      editBook(params.bookId,bookRecord)
-    } 
+  let bookRecord:BookRecord|null = await getBook(params.bookId);
+  if (bookRecord) {
+    bookRecord.title = updates.title.toString();
+    bookRecord.author = updates.author.toString();
+    editBook(params.bookId,bookRecord)
   }
   return redirect(`/books/${params.bookId}`);
 };

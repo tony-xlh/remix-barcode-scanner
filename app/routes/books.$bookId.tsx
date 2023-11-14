@@ -2,19 +2,18 @@ import { Form, useLoaderData } from "@remix-run/react";
 import { getBook } from "../data";
 import BookCard from "~/components/BookCard";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
+import invariant from "tiny-invariant";
 
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
-  if (params.bookId) {
-    const bookRecord = await getBook(params.bookId);
-    if (!bookRecord) {
-      throw new Response("Not Found", { status: 404 });
-    }
-    return json({ bookRecord });
-  }else{
+  invariant(params.bookId, "Missing bookId param");
+  const bookRecord = await getBook(params.bookId);
+  if (!bookRecord) {
     throw new Response("Not Found", { status: 404 });
   }
+  return json({ bookRecord });
+
 };
 
 export default function Book() {
