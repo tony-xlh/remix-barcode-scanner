@@ -60,7 +60,13 @@ export default function Scanner() {
     <div>
       <h1>New Book</h1>
       
-      <Form id="book-form" method="post">
+      <Form id="book-form" method="post" 
+        onSubmit={(event) => {
+          if (!ISBN) {
+            alert("ISBN must not be empty");
+            event.preventDefault();
+          }
+        }}>
         <div>
           <label>
             ISBN:
