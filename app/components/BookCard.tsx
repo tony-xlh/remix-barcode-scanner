@@ -1,9 +1,7 @@
 import { BookRecord } from "~/data";
-import React from "react";
+import { ReactElement, ReactNode } from "react";
 
-
-
-const BookCard = (props:{record:BookRecord,editable?:Boolean}): React.ReactElement => {
+const BookCard = (props:{record:BookRecord,children?:ReactNode}): ReactElement => {
   return (
     <div className="book-card">
       {Object.keys(props.record).map((key)=>(
@@ -14,6 +12,7 @@ const BookCard = (props:{record:BookRecord,editable?:Boolean}): React.ReactEleme
           <input type="text" value={(props.record as any)[key]}/>
         </div>
       ))}
+      {props.children}
     </div>
   )
 }
