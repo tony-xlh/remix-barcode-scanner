@@ -1,6 +1,5 @@
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData,useNavigate } from "@remix-run/react";
 import { BookRecord, editBook, getBook } from "../data";
-import BookCard from "~/components/BookCard";
 import { ActionFunctionArgs, LoaderFunctionArgs, json, redirect } from "@remix-run/node";
 
 export const loader = async ({
@@ -35,6 +34,7 @@ export const action = async ({
 };
 
 export default function EditBook() {
+  const navigate = useNavigate();
   const { bookRecord } = useLoaderData<typeof loader>();
   return (
     <Form id="book-form" method="post">
@@ -50,7 +50,9 @@ export default function EditBook() {
       </p>
       <p>
         <button type="submit">Save</button>
-        <button type="button">Cancel</button>
+        <button type="button" onClick={()=>{
+          navigate(-1);
+        }}>Cancel</button>
       </p>
     </Form>
   );

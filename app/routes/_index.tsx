@@ -53,7 +53,7 @@ export default function Index() {
       </ol>
       {books.map((bookRecord,idx)=>(
         <BookCard record={bookRecord} key={"book-card-"+idx}>
-          <Link to={`/books/`+bookRecord.ISBN}>Edit</Link>
+          <Link to={`/books/`+bookRecord.ISBN}>View</Link>
         </BookCard>
       ))}
       <div className="fab-container">
