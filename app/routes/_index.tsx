@@ -8,6 +8,7 @@ import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
 import { useLoaderData } from "@remix-run/react";
 import BookCard from "~/components/BookCard";
+import FloatingActionButton from "~/components/FloatActionButton";
 
 export const meta: MetaFunction = () => {
   return [
@@ -53,6 +54,11 @@ export default function Index() {
       {books.map((bookRecord,idx)=>(
         <BookCard record={bookRecord} key={"book-card-"+idx}></BookCard>
       ))}
+      <div className="fab-container">
+        <FloatingActionButton onClicked={()=>{
+          console.log("clicked");
+        }}></FloatingActionButton>
+      </div>
       <div className="scanner" style={{display:isActive?"":"none"}}>
         <BarcodeScanner 
           onInitialized={async (_enhancer:CameraEnhancer,reader:BarcodeReader)=>{
