@@ -32,7 +32,6 @@ export default function Index() {
   const { books } = useLoaderData<typeof loader>();
   return (
     <div>
-      <h1>Remix Book Manager</h1>
       {books.map((bookRecord,idx)=>(
         <BookCard record={bookRecord} key={"book-card-"+idx}>
           <Link to={`/books/`+bookRecord.ISBN}>View</Link>

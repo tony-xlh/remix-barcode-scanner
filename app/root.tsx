@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "@remix-run/react";
 
 import styles from "~/styles/main.css";
@@ -15,6 +16,12 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  const location = useLocation();
+
+  const getTitle = () => {
+    let title = "Remix Demo";
+    return title;
+  }
   return (
     <html lang="en">
       <head>
@@ -24,10 +31,13 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <div className="navbar"><h1>{getTitle()}</h1></div>
+        <div className="container">
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </div>
       </body>
     </html>
   );
