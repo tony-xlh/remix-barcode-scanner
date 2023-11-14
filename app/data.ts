@@ -27,9 +27,8 @@ const books = {
     books.records[id] = record;
   },
 
-  destroy(id: string): null {
+  async destroy(id: string): Promise<void> {
     delete books.records[id];
-    return null;
   },
 };
 
@@ -43,6 +42,14 @@ export async function getBooks(): Promise<BookRecord[]>{
 
 export async function getBook(id:string): Promise<BookRecord|null>{
   return await books.get(id);
+} 
+
+export async function editBook(id:string,record:BookRecord): Promise<void>{
+  await books.set(id,record);
+} 
+
+export async function deleteBook(id:string): Promise<void>{
+  await books.destroy(id);
 } 
 
 

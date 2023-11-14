@@ -1,6 +1,5 @@
 import { Form, useLoaderData } from "@remix-run/react";
-
-import { getBook, type BookRecord } from "../data";
+import { getBook } from "../data";
 import BookCard from "~/components/BookCard";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 
@@ -22,10 +21,10 @@ export default function Book() {
   const { bookRecord } = useLoaderData<typeof loader>();
   return (
     <div>
-      <BookCard record={bookRecord}>
+      <BookCard record={bookRecord} editable={false}>
         <div style={{display:"flex"}}>
           <Form action="edit">
-            <button type="submit">Save</button>
+            <button type="submit">Edit</button>
           </Form>
           <Form
             action="destroy"

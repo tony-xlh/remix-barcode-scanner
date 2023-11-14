@@ -13,6 +13,11 @@
   margin-bottom: 1rem;
 }
 
+.book-card p {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
 .book-info-item {
   display: flex;
 }
