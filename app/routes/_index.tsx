@@ -1,8 +1,13 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, LinksFunction } from "@remix-run/node";
 import { useState } from "react";
 import BarcodeScanner from "~/components/BarcodeScanner";
 import {CameraEnhancer} from "dynamsoft-camera-enhancer";
-import type { LinksFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { getBooks } from "../data";
+import styles from "~/styles/camera.css";
+import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
+import { useLoaderData } from "@remix-run/react";
+import BookCard from "~/components/BookCard";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,14 +16,18 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-import styles from "~/styles/camera.css";
-import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
 
+export const loader = async () => {
+  const books = await getBooks();
+  return json({ books });
+};
+
+
 export default function Index() {
+  const { books } = useLoaderData<typeof loader>();
   const [isActive,setIsActive] = useState(false);
   const [initialized,setInitialized] = useState(false);
   const [barcodes,setBarcodes] = useState<TextResult[]>([]);
@@ -41,6 +50,9 @@ export default function Index() {
           <li key={idx}>{barcode.barcodeFormatString+": "+barcode.barcodeText}</li>
         ))}
       </ol>
+      {books.map((bookRecord,idx)=>(
+        <BookCard record={bookRecord} key={"book-card-"+idx}></BookCard>
+      ))}
       <div className="scanner" style={{display:isActive?"":"none"}}>
         <BarcodeScanner 
           onInitialized={async (_enhancer:CameraEnhancer,reader:BarcodeReader)=>{

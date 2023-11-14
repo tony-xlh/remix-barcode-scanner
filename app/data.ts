@@ -1,6 +1,6 @@
 import sortBy from "sort-by";
 export type BookRecord = {
-  ISBN:number;
+  ISBN:string;
   title:string;
   author:string;
   createdAt: string;
@@ -40,3 +40,22 @@ export async function addBook(record:BookRecord){
 export async function getBooks(): Promise<BookRecord[]>{
   return await books.getAll();
 } 
+
+
+[
+  {
+    ISBN: "9781451648539",
+    title: "Steve Jobs",
+    author: "Walter Isaacson"
+  },
+  {
+    ISBN:"9780465050659",
+    title: "The Design Of Everyday Things",
+    author: "Don Norman"
+  }
+]
+.forEach((record) => {
+  const createdAt = new Date().getTime();
+  books.create({ISBN:record.ISBN,title:record.title,author:record.author,createdAt:createdAt.toString()});
+});
+  
