@@ -41,6 +41,10 @@ export async function getBooks(): Promise<BookRecord[]>{
   return await books.getAll();
 } 
 
+export async function getBook(id:string): Promise<BookRecord|null>{
+  return await books.get(id);
+} 
+
 
 [
   {

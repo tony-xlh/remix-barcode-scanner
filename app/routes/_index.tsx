@@ -6,7 +6,7 @@ import { json } from "@remix-run/node";
 import { getBooks } from "../data";
 import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import BookCard from "~/components/BookCard";
 import FloatingActionButton from "~/components/FloatActionButton";
 
@@ -52,7 +52,9 @@ export default function Index() {
         ))}
       </ol>
       {books.map((bookRecord,idx)=>(
-        <BookCard record={bookRecord} key={"book-card-"+idx}></BookCard>
+        <BookCard record={bookRecord} key={"book-card-"+idx}>
+          <Link to={`/books/`+bookRecord.ISBN}>Edit</Link>
+        </BookCard>
       ))}
       <div className="fab-container">
         <FloatingActionButton onClicked={()=>{
