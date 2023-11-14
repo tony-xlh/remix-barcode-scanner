@@ -20,7 +20,7 @@ export default function Book() {
   const { bookRecord } = useLoaderData<typeof loader>();
   return (
     <div>
-      <BookCard record={bookRecord} editable={false}>
+      <BookCard record={bookRecord}>
         <div style={{display:"flex"}}>
           <Form action="edit">
             <button type="submit">Edit</button>
