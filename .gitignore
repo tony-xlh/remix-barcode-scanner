@@ -26,6 +26,7 @@ dist/
 *.tsbuildinfo
 .prisma
 .pnpm-store
+prisma/migrations
 
 .vscode/*
 !.vscode/launch.json.default
