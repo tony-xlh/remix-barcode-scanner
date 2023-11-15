@@ -1,4 +1,5 @@
-import sortBy from "sort-by";
+import { PrismaClient } from "@prisma/client";
+
 export type BookRecord = {
   ISBN:string;
   title:string;
@@ -7,28 +8,83 @@ export type BookRecord = {
 };
 
 const books = {
-  records: {} as Record<string, BookRecord>,
+  convertRecord(book:{
+    ISBN: string;
+    title: string;
+    author: string;
+    createdAt: Date;
+  }|null):BookRecord|null{
+    if (book) {
+      return {
+        ISBN:book.ISBN,
+        title:book.title,
+        author:book.author,
+        createdAt:book.createdAt.getTime().toString()
+      }
+    }else{
+      return null;
+    }
+  },
 
   async getAll(): Promise<BookRecord[]> {
-    return Object.keys(books.records)
-      .map((key) => books.records[key])
-      .sort(sortBy("createdAt"));
+    const prisma = new PrismaClient();
+    const allBooks = await prisma.book.findMany();
+    const bookRecords = [];
+    for (let index = 0; index < allBooks.length; index++) {
+      const converted = this.convertRecord(allBooks[index]);
+      if (converted) {
+        bookRecords.push(converted);
+      }
+    }
+    await prisma.$disconnect();
+    return bookRecords;
   },
 
   async get(id: string): Promise<BookRecord | null> {
-    return books.records[id] || null;
+    const prisma = new PrismaClient();
+    const book = await prisma.book.findUnique({
+      where: {
+        ISBN: id,
+      },
+    })
+    await prisma.$disconnect();
+    return this.convertRecord(book);
   },
 
   async create(record: BookRecord): Promise<void> {
-    books.records[record.ISBN] = record;
+    const prisma = new PrismaClient();
+    await prisma.book.create({
+      data: {
+        title: record.title,
+        author: record.author,
+        ISBN: record.ISBN
+      },
+    })
+    await prisma.$disconnect();
   },
 
   async set(id: string, record: BookRecord): Promise<void> {
-    books.records[id] = record;
+    const prisma = new PrismaClient();
+    await prisma.book.update({
+      where: {
+        ISBN: id,
+      },
+      data: {
+        author: record.author,
+        title: record.title,
+      },
+    })
+    await prisma.$disconnect();
   },
 
   async destroy(id: string): Promise<void> {
-    delete books.records[id];
+    const prisma = new PrismaClient();
+    await prisma.book.delete({
+      where: {
+        ISBN: id,
+      },
+    })
+    await prisma.$disconnect();
   },
 };
 
@@ -51,22 +107,3 @@ export async function editBook(id:string,record:BookRecord): Promise<void>{
 export async function deleteBook(id:string): Promise<void>{
   await books.destroy(id);
 } 
-
-
-[
-  {
-    ISBN: "9781451648539",
-    title: "Steve Jobs",
-    author: "Walter Isaacson"
-  },
-  {
-    ISBN:"9780465050659",
-    title: "The Design Of Everyday Things",
-    author: "Don Norman"
-  }
-]
-.forEach((record) => {
-  const createdAt = new Date().getTime();
-  books.create({ISBN:record.ISBN,title:record.title,author:record.author,createdAt:createdAt.toString()});
-});
-  
