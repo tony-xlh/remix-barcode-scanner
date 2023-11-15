@@ -4,7 +4,7 @@ import BarcodeScanner from "~/components/BarcodeScanner";
 import {CameraEnhancer} from "dynamsoft-camera-enhancer";
 import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-import { Form, useLoaderData, useNavigate } from "@remix-run/react";
+import { Form, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
 import { addBook } from "~/data";
 import { queryBook } from "~/bookAPI";
 
@@ -38,14 +38,28 @@ export const action = async ({
   const author = updates.author.toString();
   const ISBN = updates.ISBN.toString();
   const timeStamp = new Date().getTime().toString();
-  addBook({
+  await addBook({
     title:title,
     author:author,
     ISBN:ISBN,
     createdAt:timeStamp
-  })
+  })  
   return redirect(`/`);
 };
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const navigate = useNavigate();
+  useEffect(()=>{
+    const goBack = () => {
+      navigate("/");
+    }
+    setTimeout(goBack,3000);
+  },[])
+  return (
+    <div>Failed to create a new record. Maybe the book has been scanned.</div>
+  );
+}
 
 
 export default function Scanner() {

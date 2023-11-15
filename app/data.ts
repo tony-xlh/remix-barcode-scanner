@@ -60,7 +60,7 @@ const books = {
         ISBN: record.ISBN
       },
     })
-    await prisma.$disconnect();
+    await prisma.$disconnect();  
   },
 
   async set(id: string, record: BookRecord): Promise<void> {
