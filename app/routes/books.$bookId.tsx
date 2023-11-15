@@ -41,7 +41,7 @@ export default function Book() {
           </Form>
         </div>
       </BookCard>
-      <button onClick={()=>navigate(-1)}>Back</button>
+      <button onClick={()=>navigate("/")}>Back</button>
     </div>
   );
 }
