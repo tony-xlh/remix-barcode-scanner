@@ -22,7 +22,7 @@ const BookCard = (props:BookCardProps): ReactElement => {
           <label>
             {key.toUpperCase()}:&nbsp;
           </label>
-          <input type="text" value={renderValue(key)}/>
+          <input type="text" defaultValue={renderValue(key)}/>
         </div>
       ))}
       {props.children}
