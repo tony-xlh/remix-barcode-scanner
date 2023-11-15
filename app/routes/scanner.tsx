@@ -1,10 +1,10 @@
-import { type MetaFunction, type LinksFunction, redirect, ActionFunctionArgs } from "@remix-run/node";
-import { useState } from "react";
+import { type MetaFunction, type LinksFunction, redirect, ActionFunctionArgs, json } from "@remix-run/node";
+import { useEffect, useState } from "react";
 import BarcodeScanner from "~/components/BarcodeScanner";
 import {CameraEnhancer} from "dynamsoft-camera-enhancer";
 import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-import { Form, useNavigate } from "@remix-run/react";
+import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import { addBook } from "~/data";
 import { queryBook } from "~/bookAPI";
 
@@ -19,29 +19,37 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
 
+export async function loader() {
+  return json({
+    ENV: {
+      DBR_LICENSE: process.env.DBR_LICENSE,
+    },
+  });
+}
 
-  export const action = async ({
-    params,
-    request,
-  }: ActionFunctionArgs) => {
+export const action = async ({
+  params,
+  request,
+}: ActionFunctionArgs) => {
 
-    const formData = await request.formData();
-    const updates = Object.fromEntries(formData);
-    const title = updates.title.toString();
-    const author = updates.author.toString();
-    const ISBN = updates.ISBN.toString();
-    const timeStamp = new Date().getTime().toString();
-    addBook({
-      title:title,
-      author:author,
-      ISBN:ISBN,
-      createdAt:timeStamp
-    })
-    return redirect(`/`);
-  };
+  const formData = await request.formData();
+  const updates = Object.fromEntries(formData);
+  const title = updates.title.toString();
+  const author = updates.author.toString();
+  const ISBN = updates.ISBN.toString();
+  const timeStamp = new Date().getTime().toString();
+  addBook({
+    title:title,
+    author:author,
+    ISBN:ISBN,
+    createdAt:timeStamp
+  })
+  return redirect(`/`);
+};
 
 
 export default function Scanner() {
+  const data = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [isActive,setIsActive] = useState(false);
   const [initialized,setInitialized] = useState(false);
@@ -101,6 +109,7 @@ export default function Scanner() {
       </Form>
       <div className="scanner" style={{display:isActive?"":"none"}}>
         <BarcodeScanner 
+          license={data.ENV.DBR_LICENSE ?? "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ=="}
           onInitialized={async (_enhancer:CameraEnhancer,reader:BarcodeReader)=>{
             const settings = await reader.getRuntimeSettings();
             settings.expectedBarcodesCount = 0;
