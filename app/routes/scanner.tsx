@@ -6,6 +6,7 @@ import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
 import { Form, useNavigate } from "@remix-run/react";
 import { addBook } from "~/data";
+import { queryBook } from "~/bookAPI";
 
 export const meta: MetaFunction = () => {
   return [
@@ -98,12 +99,19 @@ export default function Scanner() {
             await reader.updateRuntimeSettings(settings);
             setInitialized(true);
           }} 
-          onScanned={(results)=> {
+          onScanned={async (results)=> {
             console.log(results);
             setIsActive(false);
             if (results.length>0) {
               console.log("set ISBN");
               setISBN(results[0].barcodeText);
+              try {
+                let bookInfo = await queryBook(results[0].barcodeText);
+                setTitle(bookInfo.title);
+                setAuthor(bookInfo.author);
+              } catch (error) {
+                alert("Faild to fill in title and author automatically.");
+              }
             }
           }}
           isActive={isActive}
