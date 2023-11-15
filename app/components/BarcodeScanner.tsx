@@ -3,11 +3,19 @@ import {BarcodeReader,TextResult}from "dynamsoft-javascript-barcode";
 import React from "react";
 import { ReactNode } from "react";
 
+export interface ScanRegion {
+  left:number;
+  top:number;
+  right:number;
+  bottom:number;
+}
+
 export interface ScannerProps{
   isActive?: boolean;
   children?: ReactNode;
   interval?: number;
   license?: string;
+  scanRegion?: ScanRegion;
   onInitialized?: (enhancer:CameraEnhancer,reader:BarcodeReader) => void;
   onScanned?: (results:TextResult[]) => void;
   onPlayed?: (playCallbackInfo: PlayCallbackInfo) => void;
@@ -46,9 +54,21 @@ const BarcodeScanner = (props:ScannerProps): React.ReactElement => {
         }
       });
       enhancer.current.setVideoFit("cover");
+      
+      if (props.scanRegion) {
+        enhancer.current.setScanRegion({
+          regionLeft:props.scanRegion.left,
+          regionTop:props.scanRegion.top,
+          regionRight:props.scanRegion.right,
+          regionBottom:props.scanRegion.bottom,
+          regionMeasuredByPercentage:true
+        });
+      }
+
       if (props.onInitialized) {
         props.onInitialized(enhancer.current,reader.current);
       }
+      
       
       toggleCamera();
     }

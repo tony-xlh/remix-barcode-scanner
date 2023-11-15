@@ -50,6 +50,7 @@ export default function Scanner() {
   const [title,setTitle] = useState("");
   const startBarcodeScanner = () => {
     if (initialized) {
+      reset();
       setIsActive(true);
     }else{
       alert("Please wait for the initialization and then try again.");
@@ -58,6 +59,13 @@ export default function Scanner() {
   const stopBarcodeScanner = () => {
     setIsActive(false);
   }
+
+  const reset = () => {
+    setISBN("");
+    setAuthor("");
+    setTitle("");
+  }
+
   return (
     <div>
       <h1>New Book</h1>
@@ -101,8 +109,8 @@ export default function Scanner() {
           }} 
           onScanned={async (results)=> {
             console.log(results);
-            setIsActive(false);
             if (results.length>0) {
+              setIsActive(false);
               console.log("set ISBN");
               setISBN(results[0].barcodeText);
               try {
@@ -113,6 +121,12 @@ export default function Scanner() {
                 alert("Faild to fill in title and author automatically.");
               }
             }
+          }}
+          scanRegion={{
+            top:20,
+            left:0,
+            right:100,
+            bottom: 60
           }}
           isActive={isActive}
         >
