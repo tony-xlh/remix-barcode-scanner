@@ -63,6 +63,7 @@ body {
   background: #2196f3;
   pointer-events: auto;
   z-index: 9999;
+  cursor: pointer;
 }
 
 .fab:hover {

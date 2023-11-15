@@ -8,7 +8,7 @@ export interface FloatingActionButtonProps {
 const FloatingActionButton = (props:FloatingActionButtonProps): React.ReactElement => {
   return (
     <div className="fab">
-      <a href="javascript:void(0)"
+      <a 
         onClick={()=>{
           if (props.onClicked) {
             props.onClicked();
