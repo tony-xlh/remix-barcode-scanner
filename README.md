@@ -1,6 +1,26 @@
-# Welcome to Remix!
+# Remix Barcode Scanner
 
-- [Remix Docs](https://remix.run/docs)
+A barcode scanner demo in Remix.
+
+It uses [Dynamsoft Barcode Reader](https://www.dynamsoft.com/barcode-reader/overview/) to scan barcodes.
+
+To illustrate Remix's features, the demo scans the ISBN barcodes, gets the book info, and saves them to a PostgreSQL database.
+
+[Online Demo deployed on Vercel](https://remix-barcode-scanner.vercel.app/)
+
+## Demo Videos
+
+New Book Record:
+
+https://github.com/tony-xlh/remix-barcode-scanner/assets/5462205/ca85c047-af6e-4771-bc59-21a9dc2d8e38
+
+Edit a Book Record:
+
+https://github.com/tony-xlh/remix-barcode-scanner/assets/5462205/5665d91f-a163-4724-b826-52bf0c597b77
+
+Delete a Book Record:
+
+https://github.com/tony-xlh/remix-barcode-scanner/assets/5462205/177ba2df-0c16-484d-b3a4-c9c45c1234ba
 
 ## Development
 
