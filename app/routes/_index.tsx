@@ -12,8 +12,8 @@ import FloatingActionButton from "~/components/FloatActionButton";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Remix Barcode Scanner" },
+    { name: "description", content: "Remix Barcode Scanner." },
   ];
 };
 

@@ -4,14 +4,14 @@ import BarcodeScanner from "~/components/BarcodeScanner";
 import {CameraEnhancer} from "dynamsoft-camera-enhancer";
 import styles from "~/styles/camera.css";
 import { BarcodeReader, TextResult } from "dynamsoft-javascript-barcode";
-import { Form, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
+import { Form, useLoaderData, useNavigate, useNavigation, useRouteError } from "@remix-run/react";
 import { addBook } from "~/data";
 import { queryBook } from "~/bookAPI";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Remix Barcode Scanner" },
+    { name: "description", content: "Remix Barcode Scanner." },
   ];
 };
 
@@ -65,11 +65,13 @@ export function ErrorBoundary() {
 export default function Scanner() {
   const data = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const { state } = useNavigation();
   const [isActive,setIsActive] = useState(false);
   const [initialized,setInitialized] = useState(false);
   const [ISBN,setISBN] = useState("");
   const [author,setAuthor] = useState("");
   const [title,setTitle] = useState("");
+  const busy = state === "submitting";
   const startBarcodeScanner = () => {
     if (initialized) {
       reset();
@@ -91,7 +93,6 @@ export default function Scanner() {
   return (
     <div>
       <h1>New Book</h1>
-      
       <Form id="book-form" method="post" 
         onSubmit={(event) => {
           if (!ISBN) {
@@ -118,7 +119,7 @@ export default function Scanner() {
             <input name="author" onChange={e=>setAuthor(e.target.value)} type="text" value={author}/>
           </label>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={busy}>{busy ? "Submiting..." : "Submit"}</button>
         <button type="button" onClick={()=>navigate(-1)}>Back</button>
       </Form>
       <div className="scanner" style={{display:isActive?"":"none"}}>
